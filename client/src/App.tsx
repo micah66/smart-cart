@@ -5,6 +5,7 @@ import {
   Route,
   // Link,
   RootRoute,
+  createHashHistory,
 } from '@tanstack/router'
 import Root from './components/root'
 
@@ -49,7 +50,7 @@ const myCartRoute = new Route({
 
 const routeTree = rootRoute.addChildren([indexRoute, aboutRoute, myCartRoute])
 
-const router = new Router({ routeTree })
+const router = new Router({ routeTree, history: createHashHistory() })
 
 declare module '@tanstack/router' {
   interface Register {
