@@ -1,18 +1,11 @@
 import { Fragment } from 'react'
 import { Divider } from '@mui/material'
 
-import ShoppingItem from '../shoppingItem'
+import ShoppingItem, { ShoppingItemType } from '../shoppingItem'
 import ShoppingList from '../shoppingList'
 import AddShoppingItem, { AddItemInputs } from '../shoppingItem/AddItem'
 import { useLocalStorage } from '../../hooks/useStorage'
 import StyledBox from './styles'
-
-type ShoppingItemType = {
-  id: string
-  completed: boolean
-  name: string
-  quantity: number
-}
 
 export default function MyCart() {
   const [items, setItems] = useLocalStorage<ShoppingItemType[]>({
@@ -36,15 +29,6 @@ export default function MyCart() {
     setItems((existingItems) => existingItems.filter((item) => item.id !== id))
   }
 
-  const toggleItem = (id: string) => {
-    setItems((existingItems) =>
-      existingItems.map((item) => ({
-        ...item,
-        completed: item.id === id ? !item.completed : item.completed,
-      })),
-    )
-  }
-
   return (
     <StyledBox>
       <ShoppingList>
@@ -59,7 +43,20 @@ export default function MyCart() {
                 name={name}
                 quantity={quantity}
                 onDelete={handleDelete}
-                toggleItem={toggleItem}
+                editItem={(selectedId, key, value) => {
+                  setItems((existingItems) =>
+                    existingItems.map((item) => {
+                      if (item.id === selectedId) {
+                        return {
+                          ...item,
+                          [key]: value,
+                        }
+                      }
+
+                      return item
+                    }),
+                  )
+                }}
               />
               <Divider />
             </Fragment>
