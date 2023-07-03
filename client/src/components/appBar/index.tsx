@@ -9,7 +9,7 @@ export default function SmartCartAppBar({
   currentPage: string
 }) {
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{ flexGrow: 0 }}>
       <Toolbar>
         <IconButton onClick={handleOpenMenu}>
           <MenuIcon />

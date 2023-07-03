@@ -1,4 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form'
+import StyledForm from './styles'
 
 export type AddItemInputs = {
   name: string
@@ -17,7 +18,7 @@ export default function AddShoppingItem({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <input
         type="text"
         placeholder="Add a new item"
@@ -30,6 +31,6 @@ export default function AddShoppingItem({
         {...register('quantity', { required: true, min: 1 })}
       />
       <input type="submit" value="Add Item" />
-    </form>
+    </StyledForm>
   )
 }
