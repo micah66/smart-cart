@@ -8,7 +8,6 @@ import {
   TextField,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-import { useRef } from 'react'
 
 export type ShoppingItemType = {
   id: string
