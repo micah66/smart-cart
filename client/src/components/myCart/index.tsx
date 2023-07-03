@@ -5,6 +5,7 @@ import ShoppingItem from '../shoppingItem'
 import ShoppingList from '../shoppingList'
 import AddShoppingItem, { AddItemInputs } from '../shoppingItem/AddItem'
 import { useLocalStorage } from '../../hooks/useStorage'
+import StyledBox from './styles'
 
 type ShoppingItemType = {
   id: string
@@ -45,8 +46,7 @@ export default function MyCart() {
   }
 
   return (
-    <>
-      <AddShoppingItem handleAddItem={addItem} />
+    <StyledBox>
       <ShoppingList>
         {!items.length ? (
           <div>Add an item...</div>
@@ -66,6 +66,7 @@ export default function MyCart() {
           ))
         )}
       </ShoppingList>
-    </>
+      <AddShoppingItem handleAddItem={addItem} />
+    </StyledBox>
   )
 }

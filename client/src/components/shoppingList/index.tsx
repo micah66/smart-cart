@@ -5,5 +5,5 @@ export default function ShoppingList({
 }: {
   children: JSX.Element | JSX.Element[]
 }) {
-  return <List sx={{ width: '80%', margin: 'auto' }}>{children}</List>
+  return <List sx={{ overflow: 'auto', flexGrow: 1 }}>{children}</List>
 }
