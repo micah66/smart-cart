@@ -40,7 +40,7 @@ export default function ShoppingItem({
           <Checkbox
             checked={completed}
             onChange={(event) =>
-              editItem(id, 'completed', event.target.value === 'on')
+              editItem(id, 'completed', event.target.checked)
             }
           />
         </ListItemIcon>
