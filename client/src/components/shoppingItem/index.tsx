@@ -1,3 +1,5 @@
+import React, { createRef, useState } from 'react'
+
 import {
   Checkbox,
   IconButton,
@@ -8,6 +10,8 @@ import {
   TextField,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
+import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd'
 
 export type ShoppingItemType = {
   id: string
@@ -23,9 +27,13 @@ export default function ShoppingItem({
   completed,
   name,
   quantity,
+  draggable = false,
   onDelete,
   editItem,
+  dragHandleProps,
 }: ShoppingItemType & {
+  dragHandleProps: DraggableProvidedDragHandleProps | null | undefined
+  draggable: boolean
   onDelete?: (id: string) => void
   editItem: <K extends EditableShoppingItemKey>(
     id: string,
@@ -34,7 +42,22 @@ export default function ShoppingItem({
   ) => void
 }) {
   return (
-    <ListItem disableGutters disablePadding>
+    <ListItem
+      disableGutters
+      disablePadding
+      sx={{
+        '&.dragging:active': {
+          boxShadow: '0 0 10px 5px #ccc',
+          opacity: '50%',
+          transform: 'translate(5px, 5px)',
+        },
+      }}
+    >
+      {draggable && (
+        <ListItemIcon {...dragHandleProps}>
+          <DragIndicatorIcon />
+        </ListItemIcon>
+      )}
       <ListItemButton>
         <ListItemIcon>
           <Checkbox
@@ -72,5 +95,4 @@ export default function ShoppingItem({
 
 ShoppingItem.defaultProps = {
   onDelete: undefined,
-  toggleItem: undefined,
 }
