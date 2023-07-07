@@ -1,5 +1,3 @@
-import React, { createRef, useState } from 'react'
-
 import {
   Checkbox,
   IconButton,
