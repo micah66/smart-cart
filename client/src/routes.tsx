@@ -10,7 +10,14 @@ import MyCart from './components/myCart'
 
 const rootRoute = new RootRoute({
   component: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        backgroundColor: '#01579b',
+      }}
+    >
       <Root />
       <Outlet />
     </div>

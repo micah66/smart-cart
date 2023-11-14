@@ -1,9 +1,16 @@
-import { List } from '@mui/material'
+import { List } from '@mui/material';
 
-export default function ShoppingList({
-  children,
-}: {
-  children: React.ReactNode[]
-}) {
-  return <List sx={{ overflow: 'auto', flexGrow: 1 }}>{children}</List>
+export default function ShoppingList({ children }: { children: React.ReactNode[] }) {
+  return (
+    <List
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '4px',
+        marginInline: '10px',
+      }}
+    >
+      {children}
+    </List>
+  );
 }
