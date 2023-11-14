@@ -4,7 +4,8 @@ import { Box } from '@mui/material'
 const StyledBox = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
-  height: 'calc(100% - 56px)',
+  height: '100%',
+  overflow: 'auto',
 }))
 
 export default StyledBox

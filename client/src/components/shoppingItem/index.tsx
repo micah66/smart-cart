@@ -1,96 +1,94 @@
 import {
   Checkbox,
   IconButton,
-  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   TextField,
-} from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
-import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd'
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { Draggable } from 'react-beautiful-dnd';
+
+import { StyledListItem } from './styles';
 
 export type ShoppingItemType = {
-  id: string
-  completed: boolean
-  name: string
-  quantity: number
-}
+  id: string;
+  completed: boolean;
+  name: string;
+};
 
-export type EditableShoppingItemKey = keyof Omit<ShoppingItemType, 'id'>
+export type DraggableItem = {
+  disableDrag?: boolean;
+  index?: number;
+};
+
+export type EditableShoppingItemKey = keyof Omit<ShoppingItemType, 'id'>;
 
 export default function ShoppingItem({
   id,
   completed,
   name,
-  quantity,
-  draggable = false,
+  disableDrag,
   onDelete,
   editItem,
-  dragHandleProps,
-}: ShoppingItemType & {
-  dragHandleProps: DraggableProvidedDragHandleProps | null | undefined
-  draggable: boolean
-  onDelete?: (id: string) => void
-  editItem: <K extends EditableShoppingItemKey>(
-    id: string,
-    key: K,
-    value: ShoppingItemType[K],
-  ) => void
-}) {
+  index,
+}: ShoppingItemType &
+  DraggableItem & {
+    onDelete?: (id: string) => void;
+    editItem: <K extends EditableShoppingItemKey>(
+      id: string,
+      key: K,
+      value: ShoppingItemType[K]
+    ) => void;
+  }) {
   return (
-    <ListItem
-      disableGutters
-      disablePadding
-      sx={{
-        '&.dragging:active': {
-          boxShadow: '0 0 10px 5px #ccc',
-          opacity: '50%',
-          transform: 'translate(5px, 5px)',
-        },
-      }}
-    >
-      {draggable && (
-        <ListItemIcon {...dragHandleProps}>
-          <DragIndicatorIcon />
-        </ListItemIcon>
-      )}
-      <ListItemButton>
-        <ListItemIcon>
-          <Checkbox
-            checked={completed}
-            onChange={(event) =>
-              editItem(id, 'completed', event.target.checked)
+    <Draggable key={id} draggableId={id} index={index as number}>
+      {({ dragHandleProps, draggableProps, innerRef }, snapshot) => (
+        <StyledListItem
+          disableGutters
+          disablePadding
+          sx={{}}
+          isDragging={snapshot.isDragging}
+          ref={innerRef}
+          {...draggableProps}
+        >
+          {!disableDrag && (
+            <ListItemIcon sx={{ justifyContent: 'center' }} {...dragHandleProps}>
+              <DragIndicatorIcon />
+            </ListItemIcon>
+          )}
+          <ListItemButton disableGutters disableRipple>
+            <ListItemIcon>
+              <Checkbox
+                checked={completed}
+                onChange={(event) => editItem(id, 'completed', event.target.checked)}
+              />
+            </ListItemIcon>
+          </ListItemButton>
+          <ListItemText
+            primary={
+              <TextField
+                InputProps={{ disableUnderline: true }}
+                variant="standard"
+                defaultValue={name}
+                onBlur={(event) => editItem(id, 'name', event.target.value)}
+              />
             }
           />
-        </ListItemIcon>
-      </ListItemButton>
-      <ListItemText
-        primary={
-          <TextField
-            variant="standard"
-            defaultValue={name}
-            onBlur={(event) => editItem(id, 'name', event.target.value)}
-          />
-        }
-      />
-      <TextField
-        type="number"
-        variant="standard"
-        inputProps={{ min: 1 }}
-        defaultValue={quantity}
-        onBlur={(event) => editItem(id, 'quantity', Number(event.target.value))}
-      />
-      {onDelete && (
-        <IconButton onClick={() => onDelete(id)}>
-          <CloseIcon />
-        </IconButton>
+          {onDelete && (
+            <IconButton onClick={() => onDelete(id)}>
+              <CloseIcon />
+            </IconButton>
+          )}
+        </StyledListItem>
       )}
-    </ListItem>
-  )
+    </Draggable>
+  );
 }
 
 ShoppingItem.defaultProps = {
+  index: -1,
+  disableDrag: false,
   onDelete: undefined,
-}
+};
